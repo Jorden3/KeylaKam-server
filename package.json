@@ -1,0 +1,18 @@
+{
+  "name": "keylakam-server",
+  "version": "1.0.0",
+  "description": "Live stream treatfeeder",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.16.3",
+    "node": "^10.7.0",
+    "socket.io": "^2.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
