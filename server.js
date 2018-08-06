@@ -2,18 +2,21 @@
 
 var express = require('express'); // do not change this line
 var server = express();
-var http = require('http').Server(server);
-var io = require('socket.io')(http);
+var socket = require('socket.io');
 var fs = require('fs');
+
 
 var spawn = require('child_process').spawn;
 
 var sockets = {};
  
-server.get('/', (req,res)=>{
-    res.send('hello');
-});
 
+// server.get('/', (req,res)=>{
+//     res.send('hello');
+// });
+
+server.use('/', express.static(__dirname+'/'));
+var io = socket(server.listen(process.env.PORT || 8080)); // do not change this line
 
 io.on('connection', function(socket) {
  
@@ -25,21 +28,17 @@ io.on('connection', function(socket) {
  
     // no more sockets, kill the stream
     if (Object.keys(sockets).length == 0) {
-      app.set('watchingFile', false);
-      if (proc) proc.kill();
-      fs.unwatchFile('./stream/image_stream.jpg');
+    //   app.set('watchingFile', false);
+    //   if (proc) proc.kill();
+    //   fs.unwatchFile('./stream/image_stream.jpg');
     }
   });
  
 
-  startStreaming(io);
+  //startStreaming(io);
 
  
 });
-
-http.listen(3000, function() {
-    console.log('listening on *:3000');
-  });
 
 function stopStreaming() {
     if (Object.keys(sockets).length == 0) {
