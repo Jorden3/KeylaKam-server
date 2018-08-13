@@ -10,11 +10,16 @@
           <script type="text/javascript" src="http://localhost:8080/socket.io/socket.io.js"></script>
           
           <script>
-               	var objectSocket = io.connect('http://localhost:8080/');
+            var objectSocket = io.connect('http://localhost:8080/');
+            objectSocket.on('stream',(image)=>{ 
+                if(image){
+                    $("#img").attr("src",image);
+                }
+            });      
           </script>
      </head>
      
      <body>
-          
+            <img id="img" width="40%" src=''>
      </body>
 </html>
