@@ -11,11 +11,16 @@
           
           <script>
             var objectSocket = io.connect('http://localhost:8080/');
+            var count = 0;
             objectSocket.on('stream',(image)=>{ 
+                count++;
                 if(image){
                     $("#img").attr("src",image);
                 }
-            });      
+            });
+            if(count === 1000){
+                console.log(count + '\n')
+            }      
           </script>
      </head>
      
