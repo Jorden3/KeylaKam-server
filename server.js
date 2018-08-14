@@ -17,24 +17,26 @@ server.use('/', express.static(__dirname+'/'));
 var io = socket(server.listen(8080)); // do not change this line
 
 
-
 io.on('connect', function(socket) {
   var count = 0;
   sockets[socket.id] = socket;
   console.log("Total clients connected : ", Object.keys(sockets).length);
  
-  socket.on('liveStream', function(image){
+  socket.on('liveStream', function(data){
     count++;
     if(count === 100){
       console.log(count + '\n')
-  }
-    socket.broadcast.emit('stream', "data:image/png;base64,"+ image.toString("base64"))
+    }
+
+    socket.broadcast.emit('stream', data);
+      //socket.broadcast.emit('stream', "data:image/png;base64,"+ image.toString("base64"));
   });
 
   socket.on('feeder',function(){
     feeder[socket.id] = socket;
     console.log('hello', socket);
   });
+
   socket.on('disconnect', function() {
     delete sockets[socket.id];
     console.log("Total clients connected : ", Object.keys(sockets).length);

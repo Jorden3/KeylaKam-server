@@ -7,24 +7,56 @@
 
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-          <script type="text/javascript" src="http://localhost:8080/socket.io/socket.io.js"></script>
-          
-          <script>
+        <script type="text/javascript" src="http://localhost:8080/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="https://rawgit.com/131/h264-live-player/master/vendor/dist/http-live-player.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/p5.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/addons/p5.dom.js"> </script>
+
+        <style>
+
+        </style>
+
+        <script>
+                var objectSocket = io.connect('http://localhost:8080/');
+                var count = 0;
+
+                objectSocket.on('stream',(data)=>{ 
+                    count++;
+                    if(count += 100){
+                        console.log(count + '\n')
+                    }
+                
+                    $('.stream').attr('src', data)
+                });
+            
+        </script>
+
+        <img src="" class="stream">
+          <!-- <script>
             var objectSocket = io.connect('http://localhost:8080/');
             var count = 0;
-            objectSocket.on('stream',(image)=>{ 
+            objectSocket.on('stream',(data)=>{ 
                 count++;
-                if(image){
-                    $("#img").attr("src",image);
+                if(count += 100){
+                    console.log(count + '\n')
                 }
+
             });
-            if(count === 1000){
-                console.log(count + '\n')
-            }      
-          </script>
+      
+          </script> -->
      </head>
      
      <body>
-            <img id="img" width="40%" src=''>
+
+
+            
+        <!-- <script>
+            
+            var canvas = document.createElement("canvas");
+            document.body.appendChild(canvas);
+            var wsavc = new WSAvcPlayer(canvas, "webgl");
+            var protocol = window.location.protocol === "http:" ? "wss:" : "ws:"
+            wsavc.connect(protocol + '//' + window.location.host + '/video-stream');
+        </script> -->
      </body>
 </html>
