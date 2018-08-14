@@ -1,6 +1,7 @@
 'use strict';
 
 var express = require('express'); // do not change this line
+var cors = require('cors');
 var server = express();
 var socket = require('socket.io');
 var path = require('path');
@@ -13,7 +14,7 @@ var feeder = {};
 //     res.send('hello');
 // });
 
-server.use('/', express.static(__dirname+'/'));
+server.use(cors());
 var io = socket(server.listen(8080)); // do not change this line
 
 server.get('/KeylaKam', (req, res)=>{

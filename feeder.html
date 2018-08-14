@@ -7,7 +7,7 @@
 
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-        <script type="text/javascript" src="http://localhost:8080/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
         <script type="text/javascript" src="https://rawgit.com/131/h264-live-player/master/vendor/dist/http-live-player.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/p5.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/addons/p5.dom.js"> </script>
@@ -16,7 +16,7 @@
 
         </style>
         <script>
-                var objectSocket = io.connect('http://localhost:8080/');
+		var objectSocket = io.connect('http://104.196.183.23', {transports:['websocket']});
 
                 objectSocket.on('stream',(data)=>{ 
                     $('.stream').attr('src', data)
