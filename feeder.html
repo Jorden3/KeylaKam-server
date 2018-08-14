@@ -15,48 +15,19 @@
         <style>
 
         </style>
-
         <script>
                 var objectSocket = io.connect('http://localhost:8080/');
-                var count = 0;
 
                 objectSocket.on('stream',(data)=>{ 
-                    count++;
-                    if(count += 100){
-                        console.log(count + '\n')
-                    }
-                
                     $('.stream').attr('src', data)
                 });
             
         </script>
 
         <img src="" class="stream">
-          <!-- <script>
-            var objectSocket = io.connect('http://localhost:8080/');
-            var count = 0;
-            objectSocket.on('stream',(data)=>{ 
-                count++;
-                if(count += 100){
-                    console.log(count + '\n')
-                }
 
-            });
-      
-          </script> -->
      </head>
      
      <body>
-
-
-            
-        <!-- <script>
-            
-            var canvas = document.createElement("canvas");
-            document.body.appendChild(canvas);
-            var wsavc = new WSAvcPlayer(canvas, "webgl");
-            var protocol = window.location.protocol === "http:" ? "wss:" : "ws:"
-            wsavc.connect(protocol + '//' + window.location.host + '/video-stream');
-        </script> -->
      </body>
 </html>

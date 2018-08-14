@@ -3,7 +3,7 @@
 var express = require('express'); // do not change this line
 var server = express();
 var socket = require('socket.io');
-
+var path = require('path');
 
 var sockets = {};
 var feeder = {};
@@ -16,6 +16,9 @@ var feeder = {};
 server.use('/', express.static(__dirname+'/'));
 var io = socket(server.listen(8080)); // do not change this line
 
+server.get('/KeylaKam', (req, res)=>{
+  res.sendFile(path.join(__dirname + '/feeder.html'));
+});
 
 io.on('connect', function(socket) {
   var count = 0;
@@ -23,10 +26,6 @@ io.on('connect', function(socket) {
   console.log("Total clients connected : ", Object.keys(sockets).length);
  
   socket.on('liveStream', function(data){
-    count++;
-    if(count === 100){
-      console.log(count + '\n')
-    }
 
     socket.broadcast.emit('stream', data);
       //socket.broadcast.emit('stream', "data:image/png;base64,"+ image.toString("base64"));
