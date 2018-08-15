@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/p5.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/addons/p5.dom.js"> </script>
+
+        <style>
+	 .stream{
+	    width: 320px !important;
+	    height: 240px !important;
+	 }
+	  	
+        </style>
+        <script>
+	  var objectSocket = io.connect('https://www.keylakam.com');
+
+
+          objectSocket.on('stream',(data)=>{ 
+             $('.stream').attr('src', data)
+          });
+            
+        </script>
+
+        <img src="" class="stream">
+
+     </head>
+     
+     <body>
+     </body>
+</html>
