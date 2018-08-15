@@ -11,26 +11,19 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/addons/p5.dom.js"> </script>
 
         <style>
-	 .stream{
-	    width: 320px !important;
-	    height: 240px !important;
-	 }
-	  	
+
         </style>
         <script>
-	  var objectSocket = io.connect('https://www.keylakam.com');
+	  var objectSocket = io.connect('https://keylakam.com', {transports:['websocket']});
 
-
-          objectSocket.on('stream',(data)=>{ 
-             $('.stream').attr('src', data)
-          });
+                objectSocket.on('stream',(data)=>{ 
+                    $('.stream').attr('src', data)
+                });
             
-        </script>
-
-        <img src="" class="stream">
-
-     </head>
-     
-     <body>
-     </body>
+        }
+    </script>
+</body>
 </html>
+
+
+
