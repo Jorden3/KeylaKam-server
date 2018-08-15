@@ -1,20 +1,19 @@
 'use strict';
-
 var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-
 var sockets = {};
 var feeder = {};
 
-app.use(app.limit('4M'));
 
 app.get('/', (req, res)=>{
+  res.status(200);
   res.sendFile(__dirname + '/KeylaKam.html');
 });
 
 app.get("/Feeder", (req, res)=>{
+	res.status(200);
   res.sendFile(__dirname + '/feeder.html');
 });
 
@@ -23,7 +22,7 @@ io.on('connect', function(socket) {
   sockets[socket.id] = socket;
   console.log("Total clients connected : ", Object.keys(sockets).length);
 
-  socket.on('liveStream', function(data){i
+  socket.on('liveStream', function(data){
     if(data){
       socket.broadcast.emit('stream', data);
     }
@@ -48,4 +47,4 @@ io.on('connect', function(socket) {
 });
 
 
-server.listen(55542);
+app.listen(55542);
