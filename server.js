@@ -1,42 +1,38 @@
 'use strict';
 
-var express = require('express'); // do not change this line
-var cors = require('cors');
-var server = express();
-var socket = require('socket.io');
-var path = require('path');
+var app = require('express')();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
 
 var sockets = {};
 var feeder = {};
- 
 
-// server.get('/', (req,res)=>{
-//     res.send('hello');
-// });
+app.use(app.limit('4M'));
 
-server.use(cors());
-var io = socket(server.listen(8080)); // do not change this line
+app.get('/', (req, res)=>{
+  res.sendFile(__dirname + '/KeylaKam.html');
+});
 
-server.get('/KeylaKam', (req, res)=>{
-  res.sendFile(path.join(__dirname + '/feeder.html'));
+app.get("/Feeder", (req, res)=>{
+  res.sendFile(__dirname + '/feeder.html');
 });
 
 io.on('connect', function(socket) {
   var count = 0;
   sockets[socket.id] = socket;
   console.log("Total clients connected : ", Object.keys(sockets).length);
- 
-  socket.on('liveStream', function(data){
 
-    socket.broadcast.emit('stream', data);
-      //socket.broadcast.emit('stream', "data:image/png;base64,"+ image.toString("base64"));
+  socket.on('liveStream', function(data){i
+    if(data){
+      socket.broadcast.emit('stream', data);
+    }
+	    //socket.broadcast.emit('stream', "data:image/png;base64,"+ data.toString("base64"));
   });
-
   socket.on('feeder',function(){
     feeder[socket.id] = socket;
     console.log('hello', socket);
   });
-
   socket.on('disconnect', function() {
     delete sockets[socket.id];
     console.log("Total clients connected : ", Object.keys(sockets).length);
@@ -48,10 +44,8 @@ io.on('connect', function(socket) {
     //   fs.unwatchFile('./stream/image_stream.jpg');
     }
   });
- 
-
   //startStreaming(io);
-
- 
 });
 
+
+server.listen(55542);
