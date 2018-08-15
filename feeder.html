@@ -1,33 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/addons/p5.dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
 
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+    
+</head>
+<body>
+    <script>
+        var can;
+        var video;
+        var socket = io.connect('https://www.keylakam.com');
 
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        function setup(){
+            can = createCanvas(320, 240);
+            video = createCapture(VIDEO);
+            video.size(1280,720);
+            video.hide();
+        }
 
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
-        <script type="text/javascript" src="https://rawgit.com/131/h264-live-player/master/vendor/dist/http-live-player.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/p5.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/addons/p5.dom.js"> </script>
+        function draw(){
+            image(video, 0, 0, 320, 240);
 
-        <style>
-
-        </style>
-        <script>
-		var objectSocket = io.connect('http://104.196.183.23', {transports:['websocket']});
-
-                objectSocket.on('stream',(data)=>{ 
-                    $('.stream').attr('src', data)
-                });
+           
+            socket.emit('liveStream', can.canvas.toDataURL());
             
-        </script>
-
-        <img src="" class="stream">
-
-     </head>
-     
-     <body>
-     </body>
+        }
+    </script>
+</body>
 </html>
+
+
+
