@@ -1,10 +1,11 @@
-'use strict';
 var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
+server.listen(8080);
 var sockets = {};
 var feeder = {};
+
 
 
 app.get('/', (req, res)=>{
@@ -47,4 +48,3 @@ io.on('connect', function(socket) {
 });
 
 
-app.listen(55542);
