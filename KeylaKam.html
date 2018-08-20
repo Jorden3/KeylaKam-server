@@ -25,16 +25,16 @@
         </style>
         <script>
           $(document).ready(function () {		
-	    var objectSocket = io.connect('http://35.190.181.111', {transports:['websocket']});
-	    jQuery("#feedme").on('click',function(){
-	      objectSocket.emit('feed');
-            });
+            var objectSocket = io.connect('http://35.190.181.111', {transports:['websocket']});
+            jQuery("#feedme").on('click',function(){
+              objectSocket.emit('feed');
+          });
             
 
-            objectSocket.on('stream',(data)=>{
-	      $(".stream img:last-child").remove();
+          objectSocket.on('stream',(data)=>{
+            $(".stream img:last-child").remove();
               $('.stream').attr('src', data);
-            });
+          });
 	  });	  
     </script>
 	</head>

@@ -10,7 +10,7 @@ server.listen(8080);
 var sockets = {};
 var feeder;
 
-var user = [{name:'jay', password:'Keyla23'},{name:'tay', password:'Jorden11'}]
+var user = [{name:'jay', password:'Roosko06'},{name:'tay', password:'Jorden11'}]
 passport.use(new strategy(function(userid,password, done){
   if(user.findIndex(value=>{value.name = userid}) >= 0){
     return done(null, false); 
@@ -35,6 +35,7 @@ app.get('/', passport.authenticate('basic', {session:false}), (req, res)=>{
   res.sendFile(__dirname + '/KeylaKam.html');
 });
 
+//directs to feeder implementation on server w/o button push
 app.get("/Feeder", passport.authenticate('basic', {session:false}),(req, res)=>{
 	res.status(200);
   res.sendFile(__dirname + '/feeder.html');
@@ -45,17 +46,22 @@ io.on('connect', function(socket) {
   sockets[socket.id] = socket;
   console.log("Total clients connected : ", Object.keys(sockets).length);
 
+  //get stream from feeder and boardcast it to users
   socket.on('liveStream', function(data){
     if(data){
       socket.broadcast.emit('stream', data);
     }
 	    //socket.broadcast.emit('stream', "data:image/png;base64,"+ data.toString("base64"));
   });
+
+  //to know what socket the feeder is
   socket.on('feeder',function(){
     feeder = socket;
     console.log('hello', socket);
   });
 
+
+  //listen from button push and emits the action to feeder
   socket.on('feed',function(){
     console.log('EAT');
     if(feeder){
@@ -66,15 +72,7 @@ io.on('connect', function(socket) {
   socket.on('disconnect', function() {
     delete sockets[socket.id];
     console.log("Total clients connected : ", Object.keys(sockets).length);
- 
-    // no more sockets, kill the stream
-    if (Object.keys(sockets).length == 0) {
-    //   app.set('watchingFile', false);
-    //   if (proc) proc.kill();
-    //   fs.unwatchFile('./stream/image_stream.jpg');
-    }
   });
-  //startStreaming(io);
 });
 
 
