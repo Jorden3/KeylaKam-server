@@ -11,20 +11,29 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/addons/p5.dom.js"> </script>
 
         <style>
-
+	  .stream{
+	    height: 240px;
+	    width: 320px;
+	  }
         </style>
         <script>
-	  var objectSocket = io.connect('http://35.190.181.111', {transports:['websocket']});
-
-                objectSocket.on('stream',(data)=>{
-		    $(".stream img:last-child").remove()
-                    $('.stream').attr('src', data)
-                });
+          $(document).ready(function () {		
+	    var objectSocket = io.connect('http://35.190.181.111', {transports:['websocket']});
+	    jQuery(".feedme").on('click',function(){
+	      objectSocket.emit('feed');
+            });
             
-        
+
+            objectSocket.on('stream',(data)=>{
+	      $(".stream img:last-child").remove();
+              $('.stream').attr('src', data);
+            });
+	  });	  
     </script>
+	</head>
  <body>
-	 <img src="" class="stream">
+	 <img src="doggo.jpg" class="stream">
+	 <input type="button" value="FEED HER" class="feedme">
 </body>
 </html>
 
