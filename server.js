@@ -1,70 +1,78 @@
-'use strict';
+var express = require('express');
+var app = express();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+var strategy = require('passport-http').BasicStrategy; 
+var passport = require('passport');
+var session = require('express-session');
 
-var express = require('express'); // do not change this line
-var server = express();
-var http = require('http').Server(server);
-var io = require('socket.io')(http);
-var fs = require('fs');
-
-var spawn = require('child_process').spawn;
-
+server.listen(8080);
 var sockets = {};
- 
-server.get('/', (req,res)=>{
-    res.send('hello');
+var feeder;
+
+var user = [{name:'jay', password:'Roosko06'},{name:'tay', password:'Jorden11'}]
+passport.use(new strategy(function(userid,password, done){
+  if(user.findIndex(value=>{value.name = userid}) >= 0){
+    return done(null, false); 
+  }else if(user.findIndex(value=>{value.password = password}) >= 0){
+    return done(null, false); 
+  }else{
+    return done(null, user);
+  }
+}));
+
+app.use(session({
+    'store': new session.MemoryStore(),
+    'secret': 'a secret to sign the cookie',
+    'resave': false,
+    'saveUninitialized': false,
+}), express.static(__dirname + '/'))
+
+//io.set('origins', "*");
+
+app.get('/', passport.authenticate('basic', {session:false}), (req, res)=>{
+  res.status(200);
+  res.sendFile(__dirname + '/KeylaKam.html');
 });
 
+//directs to feeder implementation on server w/o button push
+app.get("/Feeder", passport.authenticate('basic', {session:false}),(req, res)=>{
+	res.status(200);
+  res.sendFile(__dirname + '/feeder.html');
+});
 
-io.on('connection', function(socket) {
- 
+io.on('connect', function(socket) {
+  var count = 0;
   sockets[socket.id] = socket;
   console.log("Total clients connected : ", Object.keys(sockets).length);
- 
+
+  //get stream from feeder and boardcast it to users
+  socket.on('liveStream', function(data){
+    if(data){
+      socket.broadcast.emit('stream', data);
+    }
+	    //socket.broadcast.emit('stream', "data:image/png;base64,"+ data.toString("base64"));
+  });
+
+  //to know what socket the feeder is
+  socket.on('feeder',function(){
+    feeder = socket;
+    console.log('hello', socket);
+  });
+
+
+  //listen from button push and emits the action to feeder
+  socket.on('feed',function(){
+    console.log('EAT');
+    if(feeder){
+      feeder.emit('feed');
+    }
+  });
+
   socket.on('disconnect', function() {
     delete sockets[socket.id];
- 
-    // no more sockets, kill the stream
-    if (Object.keys(sockets).length == 0) {
-      app.set('watchingFile', false);
-      if (proc) proc.kill();
-      fs.unwatchFile('./stream/image_stream.jpg');
-    }
+    console.log("Total clients connected : ", Object.keys(sockets).length);
   });
- 
-
-  startStreaming(io);
-
- 
 });
 
-http.listen(3000, function() {
-    console.log('listening on *:3000');
-  });
 
-function stopStreaming() {
-    if (Object.keys(sockets).length == 0) {
-      app.set('watchingFile', false);
-      if (proc) proc.kill();
-      fs.unwatchFile('./stream/image_stream.jpg');
-    }
-  }
-
-function startStreaming(io) {
- 
-    if (app.get('watchingFile')) {
-      io.sockets.emit('liveStream', 'image_stream.jpg?_t=' + (Math.random() * 100000));
-      return;
-    }
-   
-    var args = ["-w", "640", "-h", "480", "-o", "./stream/image_stream.jpg", "-t", "999999999", "-tl", "100"];
-    proc = spawn('raspistill', args);
-   
-    console.log('Watching for changes...');
-   
-    app.set('watchingFile', true);
-   
-    fs.watchFile('./stream/image_stream.jpg', function(current, previous) {
-      io.sockets.emit('liveStream', 'image_stream.jpg?_t=' + (Math.random() * 100000));
-    })
-   
-  }

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/addons/p5.dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+
+    <style>
+        .stream{
+         width: 320px !important;
+           height: 240px !important;
+        }
+   
+    </style>
+</head>
+<body>
+    <script>
+        var can;
+        var video;
+        var socket = io.connect('https://keylakam.com');
+
+        function setup(){
+            can = createCanvas(320, 240);
+            video = createCapture(VIDEO);
+            video.size(1280,720);
+            video.hide();
+        }
+
+        function draw(){
+            image(video, 0, 0, 320, 240);
+
+           
+            socket.emit('liveStream', can.canvas.toDataURL());
+            
+        }
+    </script>
+</body>
+</html>
+
+
+
