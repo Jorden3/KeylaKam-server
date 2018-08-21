@@ -10,11 +10,9 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/p5.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/addons/p5.dom.js"> </script>
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/css/bootstrap.min.css" />
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+	  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
 
         <style>
-	  .stream{
-	  }
 	  #streambox{
 	    margin-top: 20px;
 	  }
@@ -30,7 +28,6 @@
               objectSocket.emit('feed');
           });
             
-
           objectSocket.on('stream',(data)=>{
             $(".stream img:last-child").remove();
               $('.stream').attr('src', data);
