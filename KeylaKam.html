@@ -6,35 +6,36 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
 
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script type="text/javascript" src="http://35.190.181.111/socket.io/socket.io.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/p5.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/addons/p5.dom.js"> </script>
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/css/bootstrap.min.css" />
+    <script type="text/javascript" src="http://35.190.181.111/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/p5.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/addons/p5.dom.js"> </script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/css/bootstrap.min.css" />
 	  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
 
-        <style>
-	  #streambox{
-	    margin-top: 20px;
-	  }
-	  body{
-	    background: #CCCCFF !important;
-	  }
+    <style>
+      #streambox{
+        margin-top: 20px;
+      }
+      body{
+        background: #CCCCFF !important;
+      }
+    </style>
 
-        </style>
-        <script>
+    <script>
           $(document).ready(function () {		
             var objectSocket = io.connect('http://35.190.181.111', {transports:['websocket']});
             jQuery("#feedme").on('click',function(){
               objectSocket.emit('feed');
-          });
+             });
             
-          objectSocket.on('stream',(data)=>{
-            $(".stream img:last-child").remove();
-              $('.stream').attr('src', data);
-          });
-	  });	  
+            objectSocket.on('stream',(data)=>{
+              $(".stream img:last-child").remove();
+                $('.stream').attr('src', data);
+            });
+          });	  
     </script>
-	</head>
+  </head>
+  
  <body>
      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="#">KeylaKam</a>
